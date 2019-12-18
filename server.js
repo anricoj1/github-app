@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
@@ -28,13 +29,12 @@ var sessionStorage = new mysqlStore({
 });
 
 */
-
+app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
     extended : true
 }));
-app.use(bodyParser(json()));
-
+app.use(bodyParser.json());
 
 app.use(session({
     secret : 's#cure',

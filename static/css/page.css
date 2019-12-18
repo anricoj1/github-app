@@ -1,0 +1,50 @@
+.paddTop {
+    padding-top: 100px;
+}
+
+.containerHome {
+    padding-top: 100px;
+    background-color: #21252b;
+    color: white;
+}
+
+.darkContainer {
+    background-color: #21252b;
+    color: white;
+}
+
+.jumboBack {
+    background-color: #888888;
+}
+
+.footerPadding {
+    padding-top: 200px;
+    color: white;
+    background-color: #21252B;
+}
+
+.containerHome a {
+    color: white;
+}
+
+.containerHome h2 {
+    text-align: center;
+}
+
+/* media queries */
+@media (max-width: 600px) {
+    .containerHome {
+        font-size: small;
+        resize: vertical;
+    }
+
+    .footerPadding {
+        font-size: small;
+        resize: horizontal;
+    }
+
+    .darkContainer {
+        font-size: small;
+        resize: vertical;
+    }
+}

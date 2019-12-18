@@ -1,6 +1,4 @@
-
 npm install express --save
-npm install ejs --save
 npm install cookie-parser --save
 npm install express-session --save
 npm install request --save

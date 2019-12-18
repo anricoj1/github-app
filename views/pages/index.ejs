@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('../partials/includes') %>
+        <title>Github Mobile</title>
+    </head>
+    <body>
+        <%- include('../partials/nav') %>
+        <div class="container-fluid containerHome">
+            <div class="container containerHome">
+                <h2>Github Mobile</h2>
+                <p>
+                    <b>Welcome To Github Mobile.</b><br>
+                    This Application is meant to provide full view
+                    of all your repositories. You must login with Github<br>
+                    to access all of the applications features. You are authenticated
+                    with passport-github.
+                </p>
+            </div>
+            <div class="container-fluid darkContainer">
+                <div class="jumbotron text-center jumboBack">
+                    <h3>Login With Github Here</h3>
+                    <a href="/auth/github" class="btn btn-success"><span class="fa fa-github"></span> Github</a>
+                </div>
+            </div>
+            <%- include('../partials/footer') %>
+        </div>
+    </body>
+</html>
