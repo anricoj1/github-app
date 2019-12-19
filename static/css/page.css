@@ -18,7 +18,8 @@
 }
 
 .footerPadding {
-    padding-top: 200px;
+    padding-top: 300px;
+    padding-bottom: 0px;
     color: white;
     background-color: #21252B;
 }
@@ -27,7 +28,7 @@
     color: white;
 }
 
-.containerHome h2 {
+.containerHome h2, .containerHome h5, .containerHome p {
     text-align: center;
 }
 

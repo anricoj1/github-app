@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Github Mobile</title>
+        <%- include('../partials/includes') %>
+    </head>
+    <body>
+        <%- include('../partials/nav') %>
+        <div class="container-fluid containerHome">
+            <div class="container containerHome">
+                <h2>Profile Page</h2>
+                <h5><b>Welcome <%= user.name %></b></h5>
+                <p>
+                    This Is Session For <%= user.username %>'s Github.<br>
+                    You May Access As Many Features of Git As You Wish.
+                    Have Fun!!
+                </p>
+            </div>
+            <%- include('../partials/footer') %>
+        </div>
+    </body>
+</html>

@@ -18,28 +18,17 @@ var passport = require('passport');
 require('./config/passport')(passport);
 
 
-/*
-// session storage (production)
-var mysqlStore = require('express-mysql-session')(session);
-var sessionStorage = new mysqlStore({
-    host : process.env.DB_HOST,
-    user : process.env.DB_USER,
-    password : process.env.DB_PASS,
-    database : process.env.DB_DATABASE
-});
-
-*/
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
-    extended : true
+    extended : false
 }));
 app.use(bodyParser.json());
 
 app.use(session({
-    secret : 's#cure',
-    saveUninitialized : true,
-    resave : true
+    secret: 'anystringoftext',
+	saveUninitialized: true,
+    resave: true
 }));
 
 

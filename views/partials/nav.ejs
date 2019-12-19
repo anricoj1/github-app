@@ -9,8 +9,12 @@
             <li><a style="color:white" class="nav-link" href="/">Search Github</a></li>
         </ul>
         <ul class="navbar-nav">
-            <li style="float: right"><a style="color: white" class="nav-link" href="/profile">Profile</a></li>
-            <li><a style="color: white" class="nav-link" href="/logout">Logout</a></li>
+            <% if (user) { %>
+                <li style="float: right"><a style="color: white" class="nav-link" href="/profile">Profile</a></li>
+                <li><a style="color: white" class="nav-link" href="/logout">Logout</a></li>
+           <% } else { %>
+                <li></li>
+           <% } %>
         </ul>
     </div>
 </nav>

@@ -2,13 +2,13 @@ var githubStrategy = require('passport-github').Strategy;
 var connection = require('./connect');
 
 
-module.exports = (passport) => {
-    passport.serializeUser((user, done) => {
+module.exports = function(passport) {
+    passport.serializeUser(function(user, done) {
         done(null, user.username);
     });
 
-    passport.deserializeUser((username, done) => {
-        connection.query("SELECT * FROM User WHERE username = ?",[username], (err, rows) => {
+    passport.deserializeUser(function(username, done) {
+        connection.query("SELECT * FROM User WHERE username = ?",[username], function(err, rows) {
             done(err, rows[0]);
         });
     });
@@ -22,19 +22,30 @@ module.exports = (passport) => {
     },
     (accessToken, refreshToken, profile, cb) => {
         process.nextTick(() => {
-            console.log(profile);
-            connection.query("SELECT * FROM User WHERE email = ?",[profile.email], (err, rows) => {
+            connection.query("SELECT * FROM User WHERE id = ?",[profile.id], (err, rows) => {
                 if (err)
-                    return done(err);
+                    return cb(err);
                 if (rows.length) {
-                    connection,query("SELECT * FROM User WHERE email = ?",[profile.email], (err, rows) => {
-                        return done(null, rows[0]);
+                    connection.query("SELECT * FROM User WHERE id = ?",[profile.id], (err, rows) => {
+                        return cb(null, rows[0]);
                     });
                 } else {
-                    console.log(profile);
+                    var newUser = {
+                        'id' : profile.id,
+                        'username' : profile.username,
+                        'name' : profile.displayName,
+                        'avi' : profile._json.avatar_url,
+                        'repos' : profile._json.repos_url
+                    };
+
+                    connection.query("INSERT INTO User (id, username, name, avi, repos) VALUES(?,?,?,?,?)",[newUser.id, newUser.username, newUser.name, newUser.avi, newUser.repos], (err, rows) => {
+                        newUser.id = rows.insertId;
+
+                        return cb(null, newUser);
+                    });
                 }
-            })
-        })
+            });
+        });
     }));
 };
 
