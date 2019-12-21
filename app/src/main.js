@@ -24,6 +24,12 @@ exports.paramProfile = (req, res) => {
 
 // logout 
 exports.logout = (req, res) => {
-    req.logout();
-    res.redirect('/');
+    req.session.destroy((err) => {
+        if (err) {
+            res.send(err);
+        } else {
+            req.logout();
+            res.redirect('/');
+        }
+    });
 }

@@ -1,19 +1,10 @@
 module.exports = function(app, passport) {
     var main = require('./src/main');
+    var github = require('./src/github');
 
     // index route 
     app.get('/', (req, res) => {
         return main.index(req, res);
-    });
-
-    // session profile
-    app.get('/profile', isLoggedIn, (req, res) => {
-        return main.userProfile(req, res);
-    });
-
-    // parameter profile
-    app.get('/:username', isLoggedIn, (req, res) => {
-        return main.paramProfile(req, res);
     });
 
     // login with github
@@ -24,9 +15,24 @@ module.exports = function(app, passport) {
         failureRedirect : '/'
     }));
 
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
+    // session profile
+    app.get('/profile', isLoggedIn, (req, res) => {
+        return main.userProfile(req, res);
+    });
+
+    // parameter profile
+    app.get('/user/:username', isLoggedIn, (req, res) => {
+        return main.paramProfile(req, res);
+    });
+
+    // api.github.com/user/
+    app.get('/api', isLoggedIn, (req, res) => {
+        return github.gitUser(req, res, req.user.username);
+    })
+
+    // logout
+    app.get('/logout', (req, res) => {
+        return main.logout(req, res);
     });
 };
 

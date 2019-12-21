@@ -1,0 +1,7 @@
+.circleImg {
+    border-radius: 50%;
+    height: 100px;
+    position: relative;
+    top: 10%;
+    transform: translateY(-50%);   
+}

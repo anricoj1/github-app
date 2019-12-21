@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Github Mobile</title>
+        <link rel="stylesheet" type="text/css" href="css/profile.css">
         <%- include('../partials/includes') %>
     </head>
     <body>
@@ -15,8 +16,110 @@
                     You May Access As Many Features of Git As You Wish.
                     Have Fun!!
                 </p>
+                <div id="userAssets"></div>
             </div>
             <%- include('../partials/footer') %>
         </div>
+        <script>
+            $(document).ready(function() {
+                sessionGit();
+
+                function sessionGit() {
+                    $.getJSON('/api', (data) => {
+                        var url = urls(data);
+                        userAssets(data);
+                        userFollowing(data, url);
+                        userFollowers(data);
+                        starred_Url(data, url);
+                        gists_Url(data, url);
+                        subs_url(data);
+                        orgs(data);
+                        repos_Url(data);
+                        events_Url(data, url);
+                        rec_Events(data);
+                    });
+                }
+
+                function urls(data) {
+                    var arr = [
+                        (data.following_url.substring(0, data.following_url.length - 13)),
+                        (data.gists_url.substring(0, data.gists_url.length - 10)),
+                        (data.starred_url.substring(0, data.starred_url.length - 15)),
+                        (data.events_url.substring(0, data.events_url.length - 10))
+                    ];
+
+                    return arr;
+                }
+
+                function userFollowers(data) {
+                    $.getJSON(data.followers_url, (followers) => {
+                        console.log({"followers" : followers});
+                    });
+                }
+
+                function userFollowing(data, url) {
+                    $.getJSON(url[0], (following) => {
+                        console.log({"following" : following});
+                    });
+                }
+
+                function starred_Url(data, url) {
+                    $.getJSON(url[2], (starred) => {
+                        console.log({"starred" : starred});
+                    });
+                }
+
+                function gists_Url(data, url) {
+                    $.getJSON(url[1], (gists) => {
+                        console.log({"gists" : gists});
+                    });
+                }
+
+                function subs_url(data) {
+                    $.getJSON(data.subscriptions_url, (subs) => {
+                        console.log({"subs" : subs});
+                    });
+                }
+
+                function orgs(data) {
+                    $.getJSON(data.organizations_url, (org) => {
+                        console.log({"org": org});
+                    });
+                }
+
+                function repos_Url(data) {
+                    $.getJSON(data.repos_url, (repos) => {
+                        console.log({"repos" : repos});
+                    });
+                }
+
+                function events_Url(data, url) {
+                    $.getJSON(url[4], (events) => {
+                        console.log({"events" : events});
+                    });
+                }
+
+                function rec_Events(data) {
+                    $.getJSON(data.recieved_events_url, (recieved) => {
+                        console.log({"recieved": recieved});
+                    });
+                }
+
+                function userAssets(data) {
+                    document.getElementById("userAssets").innerHTML +=
+                    '<div class="container">' +
+                        '<img class="circleImg" src=' + data.avatar_url + '>' + '<br>' +
+                            '<b>' + '<a style="color: white" href=' + data.html_url + '>' + data.name + '</a>' + '<br>' +
+                            '<b>' + 'Company: ' + data.company + '</b>' + '<br>' +
+                            '<b>' + 'Blog: ' + data.blog + '</b>' + '<br>' +
+                            '<b>' + 'Bio: ' + data.bio + '</b>' + '<br>' +
+                            '<b>' + 'Public Repos Count: ' + '<strong class="odometer">' + data.public_repos + '</strong>' + '</b>' + '<br>' +
+                            '<b>' + 'Following: ' + data.following + ' Followers: ' + data.followers + '</b>' + '<br>' +
+                        '<br>' + 
+                        '<hr>' +
+                    '</div>';
+                }
+             });
+        </script>
     </body>
 </html>
