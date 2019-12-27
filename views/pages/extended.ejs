@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= user.username %>'s Repos</title>
+        <%- include('../partials/includes') %>
+    </head>
+    <body>]
+        <%- include('../partials/nav') %>
+        <div class="container-fluid containerHome">
+            <h2><%= user.username %>'s Repositories Extended</h2>
+            <div class="container containerHome">
+                <div style="text-align: center" id="userAssets"></div>
+            </div>
+            <br>
+        <%- include('../partials/footer') %>
+        </div>
+        <script>
+            $(document).ready(function() {
+                userGit();
+
+                function userGit() {
+                    $.getJSON('/api', (data) => {
+                        userAssets(data);
+                    });
+                }
+
+                function userAssets(data) {
+                    document.getElementById("userAssets").innerHTML +=
+                    '<div class="container">' +
+                        '<img class="circleImg" src=' + data.avatar_url + '>' + '<br>' +
+                            '<b>' + '<a style="color: white" href=' + data.html_url + '>' + data.name + '</a>' + '<br>' +
+                            '<b>' + 'Company: ' + data.company + '</b>' + '<br>' +
+                            '<b>' + 'Blog: ' + data.blog + '</b>' + '<br>' +
+                            '<b>' + 'Bio: ' + data.bio + '</b>' + '<br>' +
+                            '<b>' + 'Public Repos Count: ' + '<strong class="odometer">' + data.public_repos + '</strong>' + '</b>' + '<br>' +
+                            '<b>' + 'Following: ' + data.following + ' Followers: ' + data.followers + '</b>' + '<br>' +
+                        '<br>' + 
+                        '<hr>' +
+                    '</div>';                    
+                }
+            })
+        </script>
+    </body>
+</html>

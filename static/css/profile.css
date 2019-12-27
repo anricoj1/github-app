@@ -1,7 +1,86 @@
-.circleImg {
-    border-radius: 50%;
-    height: 100px;
-    position: relative;
-    top: 10%;
-    transform: translateY(-50%);   
+#repos a {
+    color: white;
+}
+
+td:hover {
+    background-color: rgb(119, 119, 119);
+
+}
+
+.profileTop {
+    padding-top: 50px;
+    background-color: #21252b;
+    color: white;
+    text-align: center;
+}
+
+.profileContainer {
+    padding-top: 50px;
+    background-color: #21252b;
+    color: white;
+}
+
+.margTop {
+    margin-top: 60px;
+}
+
+
+@media (max-width: 600px) {
+    .profileTop {
+        font-size: small;
+        resize: horizontal;
+    }
+
+    .profileContainer {
+        font-size: small;
+        resize: horizontal;
+    }
+
+    .margTop {
+        font-size: small;
+        resize: vertical;
+    }
+
+    #repos {
+        position: relative !important;
+        overflow: auto !important;
+        clip: auto !important;
+        width: auto !important;
+        height: auto !important;
+        margin: auto !important;
+        font-size: small;
+        resize: vertical;
+    }
+
+    #userAssets {
+        font-size: small;
+        resize: horizontal;
+    }
+
+    table {
+        display: block;
+
+    }
+
+    tr {
+        position: relative;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    td {
+        border: none;
+        border-bottom: 1px solid white;
+        position: relative;
+        padding-left: 50%;
+    }
+
+    td:before {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+    }
 }

@@ -16,10 +16,15 @@ exports.userProfile = (req, res) => {
     res.render(rootPath + 'profile.ejs', {user : req.user});
 }
 
+// repositories extended
+exports.reposExtended = (req, res) => {
+    res.render(rootPath + 'extended.ejs', {user : req.user});
+}
+
 
 // parameter profile
 exports.paramProfile = (req, res) => {
-    res.render(rootPath + 'profile.ejs', {user : req.user})
+    res.render(rootPath + 'profile.ejs', {user : req.user});
 }
 
 // logout 

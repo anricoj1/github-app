@@ -20,6 +20,10 @@ module.exports = function(app, passport) {
         return main.userProfile(req, res);
     });
 
+    app.get('/extended', isLoggedIn, (req, res) => {
+        return main.reposExtended(req, res);
+    })
+
     // parameter profile
     app.get('/user/:username', isLoggedIn, (req, res) => {
         return main.paramProfile(req, res);
@@ -28,7 +32,7 @@ module.exports = function(app, passport) {
     // api.github.com/user/
     app.get('/api', isLoggedIn, (req, res) => {
         return github.gitUser(req, res, req.user.username);
-    })
+    });
 
     // logout
     app.get('/logout', (req, res) => {

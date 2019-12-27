@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Github Mobile</title>
+        <title><%= user.username %>'s Github</title>
         <link rel="stylesheet" type="text/css" href="css/profile.css">
         <%- include('../partials/includes') %>
     </head>
     <body>
         <%- include('../partials/nav') %>
-        <div class="container-fluid containerHome">
-            <div class="container containerHome">
-                <h2>Profile Page</h2>
-                <h5><b>Welcome <%= user.name %></b></h5>
-                <p>
-                    This Is Session For <%= user.username %>'s Github.<br>
-                    You May Access As Many Features of Git As You Wish.
-                    Have Fun!!
-                </p>
-                <div id="userAssets"></div>
+        <div class="container-fluid profileContainer">
+            <div class="container profileTop">
+                <h2>Welcome <%= user.username %></h2>
+                <div class="margTop" id="userAssets"></div>
+            </div>
+            <br>
+            <div class="container darkContainer">
+                <a style="max-width: 300px" class="btn btn-success btn-block mx-auto" href="https://github.com/<%=user.username %>">My Github</a>
+                <br>
+                <br>
+                <table id="repos" class="table table-hover">
+                    <tr>
+                        <th>Repo Name</th>
+                        <th><span class="fa fa-code-fork"></span> Forks</th>
+                        <th>Language</th>
+                        <th>Watchers</th>
+                        <th></th>
+                    </tr>
+                </table>
             </div>
             <%- include('../partials/footer') %>
         </div>
@@ -26,84 +35,66 @@
 
                 function sessionGit() {
                     $.getJSON('/api', (data) => {
-                        var url = urls(data);
                         userAssets(data);
-                        userFollowing(data, url);
-                        userFollowers(data);
-                        starred_Url(data, url);
-                        gists_Url(data, url);
-                        subs_url(data);
-                        orgs(data);
-                        repos_Url(data);
-                        events_Url(data, url);
-                        rec_Events(data);
+                        user = new GithubUser(data.login, data.repos_url, data.events_url, data.received_events_url);
+                        user.reposUrl();
                     });
                 }
 
-                function urls(data) {
-                    var arr = [
-                        (data.following_url.substring(0, data.following_url.length - 13)),
-                        (data.gists_url.substring(0, data.gists_url.length - 10)),
-                        (data.starred_url.substring(0, data.starred_url.length - 15)),
-                        (data.events_url.substring(0, data.events_url.length - 10))
-                    ];
+                class GithubUser {
+                    constructor(name, repos_url, events_url, recieved_events_url) {
+                        this.name = name;
+                        this.repos_url = repos_url;
+                        this.events_url = events_url;
+                        this.recieved_events_url = recieved_events_url;
+                    }
 
-                    return arr;
+                    reposUrl() {
+                        $.getJSON(this.repos_url, (repos) => {
+                            repos.forEach(writeRepos);
+                        });
+                    }
                 }
 
-                function userFollowers(data) {
-                    $.getJSON(data.followers_url, (followers) => {
-                        console.log({"followers" : followers});
-                    });
+                function writeRepos(item, index) {
+                    document.getElementById("repos").innerHTML +=
+                        '<tr>'
+                            if (item.description === null) {
+                                document.getElementById("repos").innerHTML +=
+                                    '<td>' + '<b>' + '<a href=' + item.html_url + '>' + item.name + '</a>' + '</b>' + '</td>' +
+                                    repoAbout(item)
+                            } else {
+                                document.getElementById("repos").innerHTML +=
+                                '<td>' + '<b>' + '<a href=' + item.html_url + '>' + item.name + '</b>' + ': ' + item.description + '</a>' + '</td>' +
+                                repoAbout(item)
+                            }
+                        '</tr>';
                 }
 
-                function userFollowing(data, url) {
-                    $.getJSON(url[0], (following) => {
-                        console.log({"following" : following});
-                    });
+                function repoAbout(item) {
+                    if (item.language === null) {
+                        var a = '<td>' + item.forks_count + '</td>' +
+                        '<td></td>' +
+                        '<td>' + item.watchers + '</td>' +
+                        '<td>' +
+                            '<a class="btn btn-success btn-sm" href=' + item.html_url + '>' + 
+                                '<span class="fa fa-github">' + " url" + 
+                            '</a>' + 
+                        '</td>'
+                    } else {
+                        var a = 
+                        '<td>' + item.forks_count + '</td>' +
+                        '<td>' + item.language + '</td>' +
+                        '<td>' + item.watchers + '</td>' +
+                        '<td>' + 
+                            '<a class="btn btn-success btn-sm" href=' + item.html_url + '>' + 
+                                '<span class="fa fa-github">' + " url" + 
+                            '</a>' + 
+                        '</td>'
+                    }
+                    return a;
                 }
 
-                function starred_Url(data, url) {
-                    $.getJSON(url[2], (starred) => {
-                        console.log({"starred" : starred});
-                    });
-                }
-
-                function gists_Url(data, url) {
-                    $.getJSON(url[1], (gists) => {
-                        console.log({"gists" : gists});
-                    });
-                }
-
-                function subs_url(data) {
-                    $.getJSON(data.subscriptions_url, (subs) => {
-                        console.log({"subs" : subs});
-                    });
-                }
-
-                function orgs(data) {
-                    $.getJSON(data.organizations_url, (org) => {
-                        console.log({"org": org});
-                    });
-                }
-
-                function repos_Url(data) {
-                    $.getJSON(data.repos_url, (repos) => {
-                        console.log({"repos" : repos});
-                    });
-                }
-
-                function events_Url(data, url) {
-                    $.getJSON(url[4], (events) => {
-                        console.log({"events" : events});
-                    });
-                }
-
-                function rec_Events(data) {
-                    $.getJSON(data.recieved_events_url, (recieved) => {
-                        console.log({"recieved": recieved});
-                    });
-                }
 
                 function userAssets(data) {
                     document.getElementById("userAssets").innerHTML +=
